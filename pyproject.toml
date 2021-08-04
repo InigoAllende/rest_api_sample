@@ -1,0 +1,12 @@
+[tool.poetry]
+name = "Sample API"
+version = "0.1"
+description = ""
+authors = ["Inigo Allende"]
+
+[tool.poetry.dependencies]
+python = "^3.8.10"
+fastapi = "^0.68.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.4"

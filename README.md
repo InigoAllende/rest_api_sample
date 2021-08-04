@@ -1,1 +1,3 @@
-# rest_api_sample
+# Sample Rest Api
+
+Sample rest api project
