@@ -6,7 +6,8 @@ authors = ["Inigo Allende"]
 
 [tool.poetry.dependencies]
 python = "^3.8.10"
-fastapi = "^0.68.0"
+flask = "^2.0.1"
+gunicorn = "^20.1.0"
 uvicorn = "^0.14.0"
 
 [tool.poetry.dev-dependencies]
