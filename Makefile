@@ -1,2 +1,2 @@
 run:
-	gunicorn -w 1 src.api.main:app
+	gunicorn --reload -w 1 src.api.main:app
