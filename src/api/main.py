@@ -1,8 +1,7 @@
 from flask import Flask, request
 
 from src.api.models.requests import AddUserRequest
-from src.api.logic import add_user_to_db
-from src.api.db.db_logic import init_db, add_user_to_db, get_user_data
+from src.api.logic import init_db, add_user_to_db, get_user_data
 
 app = Flask(__name__)
 init_db()

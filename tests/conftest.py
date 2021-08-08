@@ -1,10 +1,10 @@
 import pytest
 
 from src.api.main import app
-from src.api.db.db_logic import _create_connection
+from src.api.logic import create_connection
 
 def _clean_db():
-    with _create_connection() as conn:
+    with create_connection() as conn:
         conn.execute(f'DELETE FROM users;')
 
 
