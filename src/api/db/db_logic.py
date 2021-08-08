@@ -47,7 +47,7 @@ def add_user_to_db(user: AddUserRequest):
 def get_user_data(user_id):
     conn = _create_connection(DB)
     cur = conn.cursor()
-    cur.execute("SELECT * FROM tasks WHERE user_id=? LIMIT 1", (user_id,))
+    cur.execute("SELECT * FROM users WHERE user_id=? LIMIT 1", (user_id,))
 
     row = cur.fetchone()
 

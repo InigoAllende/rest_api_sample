@@ -29,4 +29,5 @@ def delete_user():
 @app.route('/user/<username>', methods=['GET'])
 def get_user(username):
     data = get_user_data(username)
-    return data, 200
+    response = {'user_id': data[0], 'email': data[1], 'password': data[2], 'data': data[3]}
+    return response, 200
