@@ -41,7 +41,6 @@ def add_user_to_db(user: AddUserRequest):
         cur.execute(sql, user.as_tuple)
 
 
-
 def get_user_data(user_id):
     with sqlite3.connect(DB) as conn:
         cur = conn.cursor()
@@ -50,3 +49,11 @@ def get_user_data(user_id):
         row = cur.fetchone()
 
     return row
+
+
+def delete_user(user):
+    with sqlite3.connect(DB) as conn:
+        cur = conn.cursor()
+        cur.execute("DELETE FROM users WHERE user_id=? AND password=? LIMIT 1", user.as_tuple)
+        if not cur.rowcount:
+            print('Failed to delete, user and password do not match')

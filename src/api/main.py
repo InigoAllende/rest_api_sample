@@ -1,7 +1,8 @@
-from flask import Flask, request
+import json
 
-from src.api.models.requests import AddUserRequest
-from src.api.logic import init_db, add_user_to_db, get_user_data
+from flask import Flask, request
+from src.api.logic import add_user_to_db, get_user_data, init_db, delete_user
+from src.api.models.requests import AddUserRequest, DeleteUserRequest
 
 app = Flask(__name__)
 init_db()
@@ -21,12 +22,17 @@ def add_user():
 
 
 @app.route('/delete_user', methods=['POST'])
-def delete_user():
-    raise NotImplementedError
+def delete_user_data():
+    body = request.get_json(force=True)
+    user = DeleteUserRequest(**body)
+    delete_user(user)
+    return 'OK', 200
 
 
 @app.route('/user/<username>', methods=['GET'])
 def get_user(username):
     data = get_user_data(username)
-    response = {'user_id': data[0], 'email': data[1], 'password': data[2], 'data': data[3]}
-    return response, 200
+    if data:
+        response = {'user_id': data[0], 'email': data[1], 'password': data[2], 'data': json.loads(data[3])}
+        return response, 200
+    return {}, 200

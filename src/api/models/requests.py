@@ -22,3 +22,12 @@ class AddUserRequest(BaseModel):
     @property
     def as_tuple(self):
         return (self.user_id, self.email, self.password, json.dumps(self.data))
+
+
+class DeleteUserRequest(BaseModel):
+    user_id: str
+    password: str
+
+    @property
+    def as_tuple(self):
+        return (self.user_id, self.password)
