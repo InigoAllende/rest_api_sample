@@ -4,18 +4,22 @@ from sqlite3 import Error
 
 from src.api.models.requests import AddUserRequest
 
-DB = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'database.db')
+cur_path = os.path.dirname(os.path.realpath(__file__))
+if os.environ.get('ENV') == 'testing':
+    DB = os.path.join(cur_path, 'test_database.db')
+else:
+    DB = os.path.join(cur_path, 'database.db')
 
 
-def _create_connection(db_file):
-    conn = sqlite3.connect(db_file)
+def _create_connection():
+    conn = sqlite3.connect(DB)
     return conn
 
 
-def _create_table(conn, create_table_sql):
-    c = conn.cursor()
-    c.execute(create_table_sql)
-
+def _create_table(create_table_sql):
+    with sqlite3.connect(DB) as conn:
+        c = conn.cursor()
+        c.execute(create_table_sql)
 
 
 def init_db():
@@ -25,30 +29,23 @@ def init_db():
                         password text NOT NULL,
                         data text); '''
     
-    # create a database connection
-    conn = _create_connection(DB)
-
-    # create tables
-    if conn is not None:
-        _create_table(conn, user_table)
+    _create_table(user_table)
 
 
 def add_user_to_db(user: AddUserRequest):
-    conn = _create_connection(DB)
-
     sql = ''' INSERT INTO users(user_id,email,password,data)
               VALUES(?,?,?,?) '''
+    with sqlite3.connect(DB) as conn:
+        cur = conn.cursor()
+        cur.execute(sql, user.as_tuple)
 
-    cur = conn.cursor()
-    cur.execute(sql, user.as_tuple)
-    conn.commit()
 
 
 def get_user_data(user_id):
-    conn = _create_connection(DB)
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM users WHERE user_id=? LIMIT 1", (user_id,))
+    with sqlite3.connect(DB) as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM users WHERE user_id=? LIMIT 1", (user_id,))
 
-    row = cur.fetchone()
+        row = cur.fetchone()
 
     return row

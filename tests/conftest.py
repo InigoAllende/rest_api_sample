@@ -1,23 +1,16 @@
-import os
-import tempfile
-
 import pytest
 
 from src.api.main import app
+from src.api.db.db_logic import _create_connection
 
-# from flaskr.db import init_db
+def _clean_db():
+    with _create_connection() as conn:
+        conn.execute(f'DELETE FROM users;')
 
 
 @pytest.fixture
 def client():
-#     db_fd, db_path = tempfile.mkstemp()
-#     app = create_app({'TESTING': True, 'DATABASE': db_path})
     app.config['TESTING'] = True
-
     with app.test_client() as client:
-        # with app.app_context():
-        #     init_db()
         yield client
-
-    # os.close(db_fd)
-    # os.unlink(db_path)
+    _clean_db()
