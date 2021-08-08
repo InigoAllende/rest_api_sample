@@ -2,6 +2,7 @@ import pytest
 
 @pytest.mark.parametrize('user, email, password, data', [
     ('user1', 'user1@mail.com', 'password1', None),
+    ('user1', 'user1@mail.com', 'password1', {'foo': 'bar'}),
 ])
 def test_add_user_happy_path(client, user, email, password, data):
     body = {'user_id': user, 'email': email, 'password': password, 'data': data}
