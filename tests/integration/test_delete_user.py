@@ -27,3 +27,10 @@ def test_delete_user_happy_path(client, user, email, password, data):
     response = client.get(f'/user/{user}')
     assert response.status_code == 200
     assert not response.json
+
+
+def test_delete_user_not_in_db(client):
+    response = client.post('/delete_user', 
+                           json={'user_id': 'user1', 
+                                 'password': 'password'})
+    assert response.status_code == 200

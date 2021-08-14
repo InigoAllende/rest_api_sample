@@ -3,9 +3,16 @@ import json
 from flask import Flask, request
 from src.api.logic import add_user_to_db, get_user_data, init_db, delete_user
 from src.api.models.requests import AddUserRequest, DeleteUserRequest
+from pydantic import ValidationError
 
 app = Flask(__name__)
 init_db()
+
+
+@app.errorhandler(ValidationError)
+def handle_exception(error):
+    """Return JSON instead of HTML for HTTP errors."""
+    return error.json(), 422
 
 
 @app.route('/')

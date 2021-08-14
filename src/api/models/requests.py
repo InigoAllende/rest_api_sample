@@ -3,13 +3,13 @@ import re
 from email.utils import parseaddr
 from typing import Dict, Optional
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, validator, constr
 
 
 class AddUserRequest(BaseModel):
-    user_id: str
+    user_id: constr(min_length=1)
     email: str
-    password: str
+    password: constr(min_length=6)
     data: Optional[Dict]
 
     @validator('email')

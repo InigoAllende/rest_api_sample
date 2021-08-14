@@ -34,11 +34,14 @@ def init_db():
 
 
 def add_user_to_db(user: AddUserRequest):
-    sql = ''' INSERT INTO users(user_id,email,password,data)
+    sql = ''' INSERT OR IGNORE INTO users(user_id,email,password,data)
               VALUES(?,?,?,?) '''
     with sqlite3.connect(DB) as conn:
         cur = conn.cursor()
         cur.execute(sql, user.as_tuple)
+
+        if not cur.rowcount:
+            print('Failed to insert, user id is duplicated')
 
 
 def get_user_data(user_id):
