@@ -3,6 +3,7 @@ import sqlite3
 from sqlite3 import Error
 
 from src.api.models.requests import AddUserRequest
+from flask import current_app as app
 
 if os.environ.get('ENV') == 'testing':
     file = 'test_database.db'
@@ -34,17 +35,21 @@ def init_db():
 
 
 def add_user_to_db(user: AddUserRequest):
+    app.logger.info('Adding user to db.')
     sql = ''' INSERT OR IGNORE INTO users(user_id,email,password,data)
               VALUES(?,?,?,?) '''
     with sqlite3.connect(DB) as conn:
         cur = conn.cursor()
         cur.execute(sql, user.as_tuple)
 
-        if not cur.rowcount:
-            print('Failed to insert, user id is duplicated')
+        if cur.rowcount:
+            app.logger.info('User succesfully added to db.')
+            return
+    app.logger.warning('Failed to add user, duplicated user id')
 
 
 def get_user_data(user_id):
+    app.logger.info('Fetching user data.')
     with sqlite3.connect(DB) as conn:
         cur = conn.cursor()
         cur.execute("SELECT * FROM users WHERE user_id=? LIMIT 1", (user_id,))
@@ -55,8 +60,11 @@ def get_user_data(user_id):
 
 
 def delete_user(user):
+    app.logger.info('Deleting user data.')
     with sqlite3.connect(DB) as conn:
         cur = conn.cursor()
         cur.execute("DELETE FROM users WHERE user_id=? AND password=? LIMIT 1", user.as_tuple)
-        if not cur.rowcount:
-            print('Failed to delete, user and password do not match')
+        if cur.rowcount:
+            app.logger.info('User data succesfully deleted.')
+            return
+    app.logger.warning('Failed to delete, user and password do not match.')
