@@ -1,3 +1,7 @@
+ifndef $(version)
+  version = development
+endif
+
 run-local:
 	gunicorn --reload -w 1 src.api.main:app
 
@@ -6,7 +10,7 @@ tests:
 	pytest tests
 
 build:
-	docker build -t rest_api_sample:v$(version) .
+	docker build -t rest_api_sample:$(version) .
 
 run:
-	sudo docker run -d -p 8000:8000 rest_api_sample:v$(version)
+	docker run -d -p 8000:8000 rest_api_sample:$(version)
