@@ -43,7 +43,3 @@ def get_user(username):
         response = {'user_id': data[0], 'email': data[1], 'password': data[2], 'data': json.loads(data[3])}
         return response, 200
     return {}, 200
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)

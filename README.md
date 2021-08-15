@@ -2,9 +2,14 @@
 
 Sample rest api project using flask for the api and sqlite to store the data.
 
+## Environments setup
+
+please install `docker` and `docker-compose`.
+
 ## How to run
-You will need poetry to install the dependencies
-    `brew install poetry`
-After that simply execute the relevant make command
-    `make run`
-    `make tests`
+To run the application in a docker container simple use the `make run` command
+
+If you want to run the service locally
+* Install `poetry`
+* Install dependencies in your environment `poetry install` 
+* Run with `make run-local`

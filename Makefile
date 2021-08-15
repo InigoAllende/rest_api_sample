@@ -13,4 +13,4 @@ build:
 	docker build -t rest_api_sample:$(version) .
 
 run:
-	docker run -d -p 8000:8000 rest_api_sample:$(version)
+	docker run -p 8000:8000 rest_api_sample:$(version)
